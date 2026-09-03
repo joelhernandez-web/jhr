@@ -31,3 +31,7 @@ Antes de dar por terminada una tarea: hago pull y despliego.
   - Naranja (acento / llamadas a la acción): `#f5821f`
 - **Tipografía:** Arial, con fallback a sans-serif genérico
   (`Arial, Helvetica, sans-serif`).
+
+Aplicado en `index.html` como variables CSS: `--color-primary` (azul,
+header), `--color-bg`/`--color-surface` (blanco) y `--color-accent`
+(naranja, usado en el borde del placeholder del formulario).
