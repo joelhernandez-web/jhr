@@ -12,7 +12,12 @@
       --color-text: #1a1d23;
       --color-text-muted: #5b6270;
       --color-primary: #1f4b99;
+      --color-primary-dark: #163a7a;
       --color-border: #e1e4e9;
+      --color-success-bg: #e6f4ea;
+      --color-success-text: #1e6b3a;
+      --color-error-bg: #fdecea;
+      --color-error-text: #a83232;
     }
 
     * {
@@ -55,24 +60,130 @@
       padding: 1.25rem;
     }
 
-    .form-placeholder {
+    .card {
       background: var(--color-surface);
-      border: 2px dashed var(--color-border);
+      border: 1px solid var(--color-border);
       border-radius: 12px;
-      padding: 2.5rem 1.25rem;
-      text-align: center;
+      padding: 1.5rem 1.25rem;
+    }
+
+    .card h2 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.15rem;
+    }
+
+    .card > p {
+      margin: 0 0 1.5rem 0;
+      font-size: 0.9rem;
       color: var(--color-text-muted);
     }
 
-    .form-placeholder h2 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.1rem;
-      color: var(--color-text);
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0 0 1.5rem 0;
     }
 
-    .form-placeholder p {
-      margin: 0;
+    fieldset legend {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--color-primary);
+      padding: 0 0 0.75rem 0;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .field label {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .field .hint {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    input, select {
+      font: inherit;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--color-text);
+      width: 100%;
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 1px;
+    }
+
+    .period-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    button[type="submit"] {
+      font: inherit;
+      font-weight: 600;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--color-primary-dark);
+    }
+
+    button[type="submit"]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status-message {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
       font-size: 0.9rem;
+    }
+
+    .status-message.success {
+      background: var(--color-success-bg);
+      color: var(--color-success-text);
+    }
+
+    .status-message.error {
+      background: var(--color-error-bg);
+      color: var(--color-error-text);
+    }
+
+    .status-message[hidden] {
+      display: none;
+    }
+
+    .honeypot-field {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
     }
 
     @media (min-width: 640px) {
@@ -82,6 +193,10 @@
 
       header p {
         font-size: 1.05rem;
+      }
+
+      .field-grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
   </style>
@@ -93,10 +208,144 @@
   </header>
 
   <main>
-    <section class="form-placeholder" id="formulario-kpis">
-      <h2>Formulario de captura</h2>
-      <p>Próximamente aquí se podrán registrar los KPIs de cada mes.</p>
+    <section class="card" id="formulario-kpis">
+      <h2>Formulario de captura mensual</h2>
+      <p>Registra las razones financieras del mes. Los valores de margen, ROA y ROE se capturan en porcentaje.</p>
+
+      <form name="kpis-financieros" method="POST" data-netlify="true" netlify-honeypot="empresa-web" id="kpis-form">
+        <input type="hidden" name="form-name" value="kpis-financieros">
+        <p class="honeypot-field">
+          <label>No llenar este campo: <input name="empresa-web"></label>
+        </p>
+
+        <fieldset>
+          <legend>Periodo</legend>
+          <div class="period-grid">
+            <div class="field">
+              <label for="mes">Mes</label>
+              <select id="mes" name="mes" required>
+                <option value="" disabled selected>Selecciona</option>
+                <option value="Enero">Enero</option>
+                <option value="Febrero">Febrero</option>
+                <option value="Marzo">Marzo</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+                <option value="Octubre">Octubre</option>
+                <option value="Noviembre">Noviembre</option>
+                <option value="Diciembre">Diciembre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="anio">Año</label>
+              <input type="number" id="anio" name="anio" min="2000" max="2100" step="1" placeholder="2026" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Liquidez</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label for="razon-circulante">Razón circulante</label>
+              <span class="hint">Activo circulante / Pasivo circulante</span>
+              <input type="number" id="razon-circulante" name="razon_circulante" step="0.01" min="0" placeholder="1.50" required>
+            </div>
+            <div class="field">
+              <label for="prueba-acida">Prueba ácida</label>
+              <span class="hint">(Activo circulante − Inventarios) / Pasivo circulante</span>
+              <input type="number" id="prueba-acida" name="prueba_acida" step="0.01" min="0" placeholder="1.10" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Rentabilidad</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label for="margen-bruto">Margen bruto (%)</label>
+              <input type="number" id="margen-bruto" name="margen_bruto_pct" step="0.01" placeholder="35.00" required>
+            </div>
+            <div class="field">
+              <label for="margen-neto">Margen neto (%)</label>
+              <input type="number" id="margen-neto" name="margen_neto_pct" step="0.01" placeholder="12.00" required>
+            </div>
+            <div class="field">
+              <label for="roa">ROA (%)</label>
+              <span class="hint">Utilidad neta / Activos totales</span>
+              <input type="number" id="roa" name="roa_pct" step="0.01" placeholder="8.00" required>
+            </div>
+            <div class="field">
+              <label for="roe">ROE (%)</label>
+              <span class="hint">Utilidad neta / Capital contable</span>
+              <input type="number" id="roe" name="roe_pct" step="0.01" placeholder="15.00" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Endeudamiento</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label for="razon-deuda">Razón de deuda</label>
+              <span class="hint">Pasivo total / Activo total</span>
+              <input type="number" id="razon-deuda" name="razon_deuda" step="0.01" min="0" placeholder="0.45" required>
+            </div>
+            <div class="field">
+              <label for="deuda-capital">Deuda / Capital</label>
+              <span class="hint">Pasivo total / Capital contable</span>
+              <input type="number" id="deuda-capital" name="deuda_capital" step="0.01" min="0" placeholder="0.80" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <button type="submit">Enviar datos del mes</button>
+
+        <p class="status-message success" id="form-success" role="status" hidden>
+          ¡Gracias! Los KPIs de este mes se registraron correctamente.
+        </p>
+        <p class="status-message error" id="form-error" role="alert" hidden>
+          No se pudo enviar el formulario. Revisa tu conexión e inténtalo de nuevo.
+        </p>
+      </form>
     </section>
   </main>
+
+  <script>
+    const form = document.getElementById('kpis-form');
+    const successMessage = document.getElementById('form-success');
+    const errorMessage = document.getElementById('form-error');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      successMessage.hidden = true;
+      errorMessage.hidden = true;
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString(),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Respuesta no exitosa del servidor');
+          }
+          successMessage.hidden = false;
+          form.reset();
+        })
+        .catch(() => {
+          errorMessage.hidden = false;
+        })
+        .finally(() => {
+          submitButton.disabled = false;
+        });
+    });
+  </script>
 </body>
 </html>
